@@ -6,13 +6,6 @@ var Device = require('./lib/device')
 // Give our driver a stream interface
 util.inherits(myDriver,stream);
 
-// Our greeting to the user.
-var HELLO_WORLD_ANNOUNCEMENT = {
-  "contents": [
-    { "type": "heading",      "text": "Hello World Driver Loaded" },
-    { "type": "paragraph",    "text": "The hello world driver has been loaded. You should not see this message again." }
-  ]
-};
 
 /**
  * Called when our client starts up
@@ -32,22 +25,21 @@ function myDriver(opts,app) {
 
   var self = this;
 
-  app.on('client::up',function(){
 
-    // The client is now connected to the Ninja Platform
+    console.log("STARTING")
+   for(var key in opts ) {
+       console.log('client startup config '+key+" : "+opts[key])
+   }
 
-    // Check if we have sent an announcement before.
-    // If not, send one and save the fact that we have.
-    if (!opts.hasSentAnnouncement) {
-      self.emit('announcement',HELLO_WORLD_ANNOUNCEMENT);
-      opts.hasSentAnnouncement = true;
-      self.save();
+    if ( opts.lllw_group){
+    app.on('client::up',function(){
+        var lamp = new Device(opts.lllw_ip_address, opts.lllw_port, opts.lllw_group);
+        console.log("LAMP: "+lamp.group)
+        self.emit('register', lamp);
+    })
     }
 
-    // Register a device
-    self.emit('register', new Device());
-  });
-};
+}
 
 /**
  * Called when a user prompts a configuration.
@@ -62,6 +54,9 @@ function myDriver(opts,app) {
 myDriver.prototype.config = function(rpc,cb) {
 
   var self = this;
+
+  console.log('config ')
+
   // If rpc is null, we should send the user a menu of what he/she
   // can do.
   // Otherwise, we will try action the rpc method
