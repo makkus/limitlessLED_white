@@ -1,0 +1,18 @@
+{
+  "name": "limitlessLED_white",
+  "version": "0.0.1",
+  "description": "A driver for white limitlessLED lamps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:makkus/limitlessLED_white.git"
+  },
+  "keywords": [
+    "limitlessLED"
+  ],
+  "author": "Markus Binsteiner",
+  "license": "GPL"
+}
